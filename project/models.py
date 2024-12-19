@@ -76,6 +76,7 @@ class Issue(models.Model):
     def __str__(self):
         return f"{self.name} <{self.in_charge}>"
 
+
 class Comment(models.Model):
     description = models.CharField(max_length=1000)
     date_created = models.DateTimeField(auto_now_add=True)

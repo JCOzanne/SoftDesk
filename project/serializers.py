@@ -78,6 +78,7 @@ class ProjectListSerializer(ModelSerializer):
             'type',
             'author'
         ]
+        read_only_fields = ["author"]
 
 
 class CommentDetailSerializer(ModelSerializer):
