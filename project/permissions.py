@@ -14,7 +14,7 @@ class IsProjectContributor(BasePermission):
         if isinstance(obj, Project):
             return obj.contributor.filter(id=request.user.id).exists()
         elif isinstance(obj, Issue) or isinstance(obj, Comment):
-            return obj.project.contributor.filter(id=request.user.id).exists()
+            return obj.issue.project.contributor.filter(id=request.user.id).exists()
         return False
 
 
