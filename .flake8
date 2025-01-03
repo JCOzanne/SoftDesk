@@ -1,0 +1,19 @@
+[flake8]
+max-line-length = 119
+exclude =
+    */migrations/*,
+    */__pycache__/*,
+    .git,
+    .gitignore,
+    .venv,
+    .env,
+    env,
+    venv,
+    ENV,
+    .idea,
+    config/asgi.py,
+    config/wsgi.py,
+    project/apps.py,
+    project/tests.py,
+    user/apps.py,
+    user/tests.py,

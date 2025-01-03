@@ -8,6 +8,17 @@ from config.settings import AUTH_USER_MODEL
 
 class Project(models.Model):
 
+    """
+    Represents a project with related issues and contributors.
+    Attributes:
+        name (CharField): The name of the project.
+        description (CharField): A detailed description of the project.
+        type (CharField): The type of project (e.g., back-end, front-end, iOS, Android).
+        date_created (DateTimeField): The timestamp when the project was created.
+        author (ForeignKey): The user who created the project.
+        contributor (ManyToManyField): The users who are contributors to the project.
+    """
+
     BACK_END = 'BACK_END'
     FRONT_END = 'FRONT_END'
     IOS = 'IOS'
@@ -23,7 +34,7 @@ class Project(models.Model):
     description = models.CharField(max_length=1000)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES, verbose_name='Type')
     date_created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name = 'project_author')
+    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_author')
     contributor = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='project')
 
     def __str__(self):
@@ -31,11 +42,34 @@ class Project(models.Model):
 
 
 class Contributor(models.Model):
+
+    """
+    Links a User to a Project as a contributor.
+    Attributes:
+        user (ForeignKey): The user contributing to the project.
+        project (ForeignKey): The project the user contributes to.
+    """
+
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project = models.ForeignKey(to=Project, on_delete=models.CASCADE, related_name='contributors')
 
 
 class Issue(models.Model):
+
+    """
+    Represents an issue within a project.
+    Attributes:
+        name (CharField): The name of the issue.
+        description (CharField): Details about the issue.
+        priority (CharField): The priority level of the issue (e.g., Low, Medium, High).
+        tag (CharField): The category of the issue (e.g., Bug, Feature, Task).
+        status (CharField): The current status of the issue (e.g., To Do, In Progress, Finished).
+        date_created (DateTimeField): The timestamp when the issue was created.
+        author (ForeignKey): The user who reported the issue.
+        project (ForeignKey): The project the issue belongs to.
+        in_charge (ForeignKey): The user assigned to resolve the issue.
+    """
+
     LOW = 'LOW'
     MEDIUM = 'MEDIUM'
     HIGH = 'HIGH'
@@ -78,6 +112,16 @@ class Issue(models.Model):
 
 
 class Comment(models.Model):
+
+    """
+    Represents a comment on an issue.
+    Attributes:
+        description (CharField): The text of the comment.
+        date_created (DateTimeField): The timestamp when the comment was created.
+        author (ForeignKey): The user who wrote the comment.
+        issue (ForeignKey): The issue the comment is associated with.
+    """
+
     description = models.CharField(max_length=1000)
     date_created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -1,5 +1,6 @@
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.serializers import ModelSerializer
 from rest_framework.viewsets import ModelViewSet
 from project.models import Project, Contributor, Issue, Comment
 from project.permissions import IsProjectContributor, IsAuthorOrReadOnly
@@ -8,12 +9,18 @@ from project.serializers import ProjectDetailSerializer, ContributorSerializer, 
 from user.models import User
 
 
-class MultipleSerializerMixin :
+class MultipleSerializerMixin:
 
     detail_serializer_class = None
 
-    def get_serializer_class(self):
-        if self.action == 'retrieve'and self.detail_serializer_class is not None:
+    def get_serializer_class(self) -> type[ModelSerializer]:
+
+        """
+        Determines the appropriate serializer class to use based on the action being performed.
+        :return: The serializer class appropriate for the current action.
+        """
+
+        if self.action == 'retrieve' and self.detail_serializer_class is not None:
             return self.detail_serializer_class
         return super().get_serializer_class()
 
@@ -27,7 +34,13 @@ class ProjectViewSet(MultipleSerializerMixin, ModelViewSet):
     def get_queryset(self):
         return Project.objects.all()
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: ModelSerializer) -> None:
+
+        """
+        Custom logic for creating a new object.
+        :param serializer: The serializer containing the validated data for the object.
+        :return: None
+        """
         project = serializer.save(author=self.request.user)
         project.contributor.add(self.request.user)
 
@@ -82,6 +95,12 @@ class IssueViewSet(MultipleSerializerMixin, ModelViewSet):
         )
 
     def perform_update(self, serializer):
+
+        """
+        Custom logic for updating an existing object.
+        :param serializer: The serializer containing the validated data for the object.
+        :return: None
+        """
         in_charge_id = self.request.data.get('in_charge')
         if in_charge_id:
             project = serializer.instance.project

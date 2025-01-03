@@ -13,7 +13,14 @@ class ContributorSerializer(ModelSerializer):
             'project',
         ]
 
-    def validate(self, data):
+    def validate(self, data: dict) -> dict:
+
+        """
+        Validates the provided data before saving it to the database.
+        :param data: The input data to be validated.
+        :return: The validated data.
+        """
+
         project = data.get('project')
         user = data.get('user')
 
@@ -62,6 +69,7 @@ class IssueListSerializer(ModelSerializer):
 
 
 class ProjectDetailSerializer(ModelSerializer):
+
     issues = IssueListSerializer(many=True)
     contributor = UserSerializer(many=True, read_only=True)
 
