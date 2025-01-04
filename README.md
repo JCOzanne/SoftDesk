@@ -126,5 +126,5 @@ champ {"in_charge" : user_id }
 Rapport obtenu avec la commande :
 flake8 authentication blog webapp --format=html --htmldir=flake8-report 
 Conformément au fichier de configuration .flake8
-![Rapport Flake8](https://github.com/JCOzanne/SotDesk/blob/main/Rapport_Flake8.png?raw=true)
+![Rapport Flake8](https://github.com/JCOzanne/SotDesk/blob/main/rapport_flake8.PNG?raw=true)
 
